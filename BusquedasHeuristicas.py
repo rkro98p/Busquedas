@@ -1,6 +1,8 @@
 from collections import deque
 from operator import itemgetter
-
+from colorama import Fore
+from colorama import init
+init(autoreset=True)
 import time
 
 def ordenarHijos(hijos):
@@ -15,7 +17,7 @@ class BusquedaH():
         tic = time.perf_counter()
         actual=origen
         while (True):
-            print('actual:\t'+actual.getNombre()+'\th('+actual.getNombre()+')='+actual.getValor())
+            print('actual:\t'+actual.getNombre()+'\t('+actual.getNombre()+')='+actual.getValor())
             if(actual in destinos):
                 print('¡Nodo encontrado!')
                 break
@@ -23,7 +25,7 @@ class BusquedaH():
                 aux=0
                 i=0
                 for i in actual.getAristas():
-                    if int(i.getNodoDest().getValor())<int(actual.getValor()):
+                    if int(i.getNodoDest().getValor())<=int(actual.getValor()):
                         actual=i.getNodoDest()
                         aux=1
                 if(aux==0):
@@ -34,7 +36,9 @@ class BusquedaH():
                 print(actual.getNombre()+' '+actual.getValor()+'No se puede mejorar')
                 break
         toc = time.perf_counter()
-        print(f"\nTiempo transcurrido {toc - tic:0.8f} segundos")
+        print(Fore.CYAN + "\nTiempo transcurrido " + str((toc-tic)*1000) + 'ms')
+        ##print(f"\nTiempo transcurrido {toc - tic:0.8f} segundos")
+
     def PrimeroMejor(self,origen,destinos):
         tic = time.perf_counter()
         cola=deque()
@@ -58,7 +62,6 @@ class BusquedaH():
                     if i.getNodoDest() in destinos:
                         #ban=1
                         break
-
                 hijos = sorted(hijos, key=lambda x: int(x.valor))
                 #print(''.join(x.getNombre() + '' + x.valor+ " " for x in hijos))
 
@@ -69,7 +72,8 @@ class BusquedaH():
                 print('¡Nodo encontrado!')
                 break
         toc = time.perf_counter()
-        print(f"\nTiempo transcurrido {toc - tic:0.8f} segundos")
+        print(Fore.CYAN + "\nTiempo transcurrido " + str((toc-tic)*1000)+ 'ms')
+        #print(f"\nTiempo transcurrido {toc - tic:0.8f} segundos")
     def Aestrella(self, origen, destinos):
         tic = time.perf_counter()
         cola = deque()
@@ -92,4 +96,5 @@ class BusquedaH():
                 print('¡Nodo encontrado!')
                 break
         toc = time.perf_counter()
-        print(f"\nTiempo transcurrido {toc - tic:0.8f} segundos")
+        print(Fore.CYAN + "\nTiempo transcurrido " + str((toc-tic)*1000)+ 'ms')
+        #print(f"\nTiempo transcurrido {toc - tic:0.8f} segundos")

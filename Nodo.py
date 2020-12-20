@@ -27,6 +27,7 @@ class Nodo():
         self.nivel = nivel
     def getNivel(self):
         return self.nivel
+
     def getAristasSN(self, nodoQuitar):
         aux = []
         for i in self.aristas:

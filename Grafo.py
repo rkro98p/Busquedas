@@ -1,7 +1,10 @@
 import csv
 from Nodo import Nodo
 from colorama import Fore, Back, Style
+import threading
 from colorama import init
+from dibujarGrafo import Dibujar
+
 init(autoreset=True)
 
 from BusquedasCiegas import *
@@ -13,6 +16,25 @@ class Grafo():
 
     def eliminarNodos(self):
         self.nodos=[]
+
+    def crearGrafo1(self,archivo,dib):
+        with open(archivo, newline='') as File:
+            reader = csv.reader(File)
+            for row in reader:
+                nodoA=self.getNodoByStr(str(row[0]))
+                if nodoA is None:
+                    nodoA=self.addNode(str(row[0]))
+
+                    nodoA.setValor(row[1])
+                    dib.addNode(nodoA.getNombre(),nodoA.getValor())
+                nodoB=self.getNodoByStr(str(row[2]))
+                if nodoB is None:
+                    nodoB=self.addNode(str(row[2]))
+
+                    nodoB.setValor(row[3])
+                    dib.addNode(nodoB.getNombre(),nodoB.getValor())
+                self.addArista(nodoA,nodoB,row[4])
+                dib.addEdge(nodoA.getNombre(),nodoB.getNombre(),row[4])
 
     def crearGrafo(self,archivo):
         with open(archivo, newline='') as File:
@@ -210,16 +232,23 @@ def menu():
     print(Fore.RED+'\nq. Salir')
     opc = input("\n>>>")
     return opc
+def dibujar():
+    dib = Dibujar()
+    grafo.crearGrafo1(archivo,dib)
+    print('entra')
+    dib.dibujar()
 
+grafo = Grafo()
+archivo="prueba3.csv"
+
+origen='S'
+destinos=['E']
+destinoBi='E'
+
+hilo1 = threading.Thread(target=dibujar)
+hilo1.start()
 
 opc=menu()
-grafo = Grafo()
-archivo="prueba2.csv"
-
-origen='A'
-destinos=['F']
-destinoBi='F'
-
 while (opc!='q'):
 
     if (opc == '1'):

@@ -1,6 +1,6 @@
 from collections import deque
 from operator import itemgetter
-from colorama import Fore, Back, Style
+from colorama import Fore
 from colorama import init
 init(autoreset=True)
 
@@ -43,6 +43,7 @@ class Busqueda():
                         nodosRel.append(i.getNodoDest())
                 nodosRel = ordenarHijos(nodosRel)
                 cola += nodosRel
+
                 print('---------------------')
                 #print('Iteracion:' + str(aux))
                 print('Extrae:\t\t' + extrae.getNombre())
@@ -53,7 +54,9 @@ class Busqueda():
                 print('\n¡Nodo encontrado!')
 
         toc = time.perf_counter()
-        print(Fore.CYAN+f"Busqueda terminada en {toc - tic:0.8f} segundos")
+
+        print(Fore.CYAN+"Busqueda terminada en "+str((toc-tic)*1000)+'ms')
+        #print(Fore.CYAN+f"Busqueda terminada en {toc - tic:0.8f} segundos")
 
     def AmplitudSF(self, origen):
         # Inicializar variables
@@ -92,8 +95,8 @@ class Busqueda():
             print('visitados:\t' + ' '.join(x.getNombre() for x in visitados))
 
         toc = time.perf_counter()
-
-        print(Fore.CYAN+f"\nGrafo recorrido en su totalidad en {toc - tic:0.8f} segundos")
+        print(Fore.CYAN + '\nGrafo recorrido en su totalidad en '+str((toc-tic)*1000)+ 'ms')
+        #print(Fore.CYAN+f"\nGrafo recorrido en su totalidad en {toc - tic:0.8f} segundos")
 
     def Profundidad(self, origen, destinos):
         # Inicializar variables
@@ -135,7 +138,8 @@ class Busqueda():
                 print('\n¡Nodo encontrado!')
 
         toc = time.perf_counter()
-        print(Fore.CYAN+f"Busqueda terminada en {toc - tic:0.8f} segundos")
+        print(Fore.CYAN +'Busqueda terminada en '+ str((toc-tic)*1000)+ 'ms')
+        #print(Fore.CYAN+f"Busqueda terminada en {toc - tic:0.8f} segundos")
 
     def ProfundidadSF(self, origen):
         # Inicializar variables
@@ -175,8 +179,8 @@ class Busqueda():
             print('visitados:\t' + ' '.join(x.getNombre() for x in visitados))
 
         toc = time.perf_counter()
-
-        print(Fore.CYAN+f"\nGrafo recorrido en su totalidad en {toc - tic:0.8f} segundos")
+        print(Fore.CYAN +"\nGrafo recorrido en su totalidad en "+str((toc-tic)*1000)+ 'ms')
+        #print(Fore.CYAN+f"\nGrafo recorrido en su totalidad en {toc - tic:0.8f} segundos")
 
     def ProfundidadIterativa(self,origen,destinos):
         tic = time.perf_counter()
@@ -219,7 +223,7 @@ class Busqueda():
                             if(i.getNodoDest() not in visitados  and i.getNodoDest() not in cola):
                                 i.getNodoDest().setNivel(extrae.getNivel()+1)
                                 nodosRel.append(i.getNodoDest())
-                        nodosRel = ordenarHijos(nodosRel)
+                        nodosRel = deque(ordenarHijos(nodosRel))
                         cola=nodosRel+cola
 
                     #print('---------------------\nIteracion:' + str(aux + 1))
@@ -229,7 +233,8 @@ class Busqueda():
                     aux = aux + 1
             nivel += 1
         toc = time.perf_counter()
-        print(Fore.CYAN+ f"\nTiempo transcurrido {toc - tic:0.8f} segundos")
+        print(Fore.CYAN + "\nTiempo transcurrido " + str((toc-tic)*1000)+ 'ms')
+        #print(Fore.CYAN+ f"\nTiempo transcurrido {toc - tic:0.8f} segundos")
 
     def Bidireccional(self, origen, destino):
         # Inicializar variables
@@ -288,7 +293,8 @@ class Busqueda():
                             break
                 print('\n')
         toc = time.perf_counter()
-        print(Fore.CYAN + f"\nTiempo transcurrido {toc - tic:0.8f} segundos")
+        print(Fore.CYAN + "\nTiempo transcurrido " + str((toc-tic)*1000)+ 'ms')
+        #print(Fore.CYAN + f"\nTiempo transcurrido {toc - tic:0.8f} segundos")
 
 
     """
@@ -373,6 +379,7 @@ class Busqueda():
             if(len(cola)==0):
                 break;
         toc = time.perf_counter()
-        print(Fore.CYAN+f"Busqueda terminada en {toc - tic:0.8f} segundos")
+        print(Fore.CYAN + "\nBusqueda terminada en " + str((toc-tic)*1000)+ 'ms')
+        #print(Fore.CYAN+f"Busqueda terminada en {toc - tic:0.8f} segundos")
 
 
