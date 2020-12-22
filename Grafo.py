@@ -159,8 +159,8 @@ class Grafo():
     def CostoUniforme(self,origen,destinos):
         nodoA = self.getNodoByStr(origen)
         if (destinos == '' and nodoA is not None):
-            nodoB = Nodo('asd')
-            Busqueda().costoUniforme(nodoA, [nodoB.getNombre()])
+
+            Busqueda().costoUniformeSF(nodoA)
             print(Fore.CYAN + 'Grafo recorrido en su totalidad')
 
         else:
