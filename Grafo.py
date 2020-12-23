@@ -245,8 +245,8 @@ origen='S'
 destinos=['E']
 destinoBi='E'
 
-hilo1 = threading.Thread(target=dibujar)
-hilo1.start()
+#hilo1 = threading.Thread(target=dibujar)
+#hilo1.start()
 
 opc=menu()
 while (opc!='q'):

@@ -126,7 +126,7 @@ class Busqueda():
                 visitados.append(extrae)
                 nodosRel = deque()
                 for i in extrae.getAristas():
-                    if (i.getNodoDest() not in visitados):
+                    if (i.getNodoDest() not in visitados and i.getNodoDest() not in cola):
                         nodosRel.append(i.getNodoDest())
                 nodosRel = deque(ordenarHijos(nodosRel))
                 cola=nodosRel+cola
@@ -169,13 +169,12 @@ class Busqueda():
                 visitados.append(extrae)
                 nodosRel = deque()
                 for i in extrae.getAristas():
-                    if (i.getNodoDest() not in visitados):
+                    if (i.getNodoDest() not in visitados and i.getNodoDest() not in cola ):
                         nodosRel.append(i.getNodoDest())
                 #nodosRel = ordenarHijos(nodosRel)
                 nodosRel = deque(ordenarHijos(nodosRel))
                 cola=nodosRel+cola
                 print('---------------------')
-                #print('Iteracion:' + str(aux))
                 print('Extrae:\t\t' + extrae.getNombre())
                 print('Cola:\t\t' + ' '.join(x.getNombre() for x in cola))
                 aux = aux + 1
@@ -230,9 +229,9 @@ class Busqueda():
                         cola=nodosRel+cola
 
                     print('---------------------')
-                    print('Extrae:' + extrae.getNombre())
-                    print('Cola:' + ' '.join(x.getNombre() for x in cola))
-
+                    print('Extrae:\t\t' + extrae.getNombre())
+                    print('Cola:\t\t' + ' '.join(x.getNombre() for x in cola))
+                    print('visitados:\t' + ' '.join(x.getNombre() for x in visitados))
                     aux = aux + 1
             nivel += 1
         toc = time.perf_counter()
@@ -303,16 +302,29 @@ class Busqueda():
         #print(Fore.CYAN + f"\nTiempo transcurrido {toc - tic:0.8f} segundos")
 
     def costoUniforme(self,origen,destinos):
-        tic = time.perf_counter()
-        cola=deque()
-        cola.append([0,origen])
-        extrae=[0,'']
+        """tic = time.perf_counter()
+        cola = deque()
+        nodo = Nodo('')
+        cola.append([0, nodo, origen])
+        extrae = [0, nodo, nodo]
+        visitados = deque()
 
         while (len(cola)>0 and extrae[1] not in destinos):
             extrae=cola.popleft()
-            for i in extrae[1].getAristasSN(extrae[1]):
-                if (i.getPeso()!=''):
-                    cola.append([int(i.getPeso())+int(extrae[0]),i.getNodoDest()])
+            for i in extrae[2].getAristasSN(extrae[2]):
+                if (i.getPeso() != ''):
+                    valAcum = int(i.getPeso()) + int(extrae[0])
+                    arr = [valAcum, extrae[2], i.getNodoDest()]
+                    p = 0
+                    o = 0
+                    for j in visitados:
+                        if extrae[2] == j[1] and i.getNodoDest() == j[2] and valAcum >= j[0]:
+                            p = 1
+                    for k in cola:
+                        if extrae[2] == k[1] and i.getNodoDest() == k[2] and valAcum >= k[0]:
+                            o = 1
+                    if p != 1 and o != 1:
+                        cola.append(arr)
             cola = deque(sorted(list(cola), key=itemgetter(0)))
 
             print('----------------------------------------')
@@ -325,8 +337,50 @@ class Busqueda():
             if(len(cola)==0):
                 break;
         toc = time.perf_counter()
-        print(Fore.CYAN + "\nBusqueda terminada en " + str((toc-tic)*1000)+ 'ms')
-        #print(Fore.CYAN+f"Busqueda terminada en {toc - tic:0.8f} segundos")
+        print(Fore.CYAN + "\nBusqueda terminada en " + str((toc-tic)*1000)+ 'ms')"""
+        tic = time.perf_counter()
+        cola = deque()
+        nodo = Nodo('')
+        cola.append([0, nodo, origen])
+        extrae = [0, nodo, nodo]
+        visitados = deque()
+
+        while (len(cola) > 0 and extrae[2] not in destinos):
+
+            extrae = cola.popleft()
+            visitados.append(extrae)
+            if (extrae[1] in destinos):
+                print('\n¡Nodo Encontrado!')
+                break
+            for i in extrae[2].getAristasSN(extrae[2]):
+                if (i.getPeso() != ''):
+                    valAcum = int(i.getPeso()) + int(extrae[0])
+                    arr = [valAcum, extrae[2], i.getNodoDest()]
+                    p = 0
+                    o = 0
+                    for j in visitados:
+                        if extrae[2] == j[1] and i.getNodoDest() == j[2] and valAcum >= j[0]:
+                            p = 1
+                    for k in cola:
+                        if extrae[2] == k[1] and i.getNodoDest() == k[2] and valAcum >= k[0]:
+                            o = 1
+                    if p != 1 and o != 1:
+                        cola.append(arr)
+
+            cola = deque(sorted(list(cola), key=itemgetter(0)))
+
+            print('extrae:\t\t\t' + str(extrae[0]) + '' + extrae[1].getNombre() + '' + extrae[2].getNombre())
+            print('Cola:\t\t' + ''.join(' ' + str(+x[0]) + '' + x[1].getNombre() + '' + x[2].getNombre() for x in cola))
+            print('visitados:\t' + ''.join(
+                ' ' + str(+x[0]) + '' + x[1].getNombre() + '' + x[2].getNombre() for x in visitados))
+            print('-----------------------------')
+            #if (cola):
+             #   print('extrae:\t\t\t' + str(cola[0][0]) + '' + cola[0][1].getNombre() + '' + cola[0][2].getNombre())
+            if (len(cola) == 0):
+                break;
+
+        toc = time.perf_counter()
+        print(Fore.CYAN + "\nBusqueda terminada en " + str((toc - tic) * 1000) + 'ms')
 
     def costoUniformeSF(self,origen):
         tic = time.perf_counter()
@@ -339,6 +393,7 @@ class Busqueda():
         while (len(cola)>0 ):
             extrae=cola.popleft()
             visitados.append(extrae)
+
             for i in extrae[2].getAristasSN(extrae[2]):
                 if (i.getPeso()!=''):
                     valAcum=int(i.getPeso())+int(extrae[0])
@@ -366,4 +421,3 @@ class Busqueda():
 
         toc = time.perf_counter()
         print(Fore.CYAN + "\nBusqueda terminada en " + str((toc-tic)*1000)+ 'ms')
-        #print(Fore.CYAN+f"Busqueda terminada en {toc - tic:0.8f} segundos")

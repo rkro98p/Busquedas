@@ -52,6 +52,7 @@ class BusquedaH():
             print('extrae:\t'+actual.getNombre())
             visitados.append(actual)
             if (actual in destinos):
+                print('visitados:\t' + ' '.join(x.getNombre() for x in visitados))
                 print('¡Nodo encontrado!')
                 break
             if(len(actual.getAristas())>0):
@@ -59,18 +60,19 @@ class BusquedaH():
                 for i in actual.getAristas():
                     if (i.getNodoDest() not in visitados and i.getNodoDest() not in cola):
                         hijos.append(i.getNodoDest())
-                    if i.getNodoDest() in destinos:
+                    ##if i.getNodoDest() in destinos:
                         #ban=1
-                        break
+                      ##  break
                 hijos = sorted(hijos, key=lambda x: int(x.valor))
                 #print(''.join(x.getNombre() + '' + x.valor+ " " for x in hijos))
 
                 cola=deque(hijos)+cola
             print('cola:\t' + ' '.join(x.getNombre() for x in cola))
+            print('visitados:\t' + ' '.join(x.getNombre() for x in visitados))
+            #if(ban==1):
+             #   print('¡Nodo encontrado!')
 
-            if(ban==1):
-                print('¡Nodo encontrado!')
-                break
+              #  break
         toc = time.perf_counter()
         print(Fore.CYAN + "\nTiempo transcurrido " + str((toc-tic)*1000)+ 'ms')
         #print(f"\nTiempo transcurrido {toc - tic:0.8f} segundos")
