@@ -242,7 +242,7 @@ grafo = Grafo()
 archivo="prueba3.csv"
 
 origen='S'
-destinos=['E']
+destinos=['B']
 destinoBi='E'
 
 #hilo1 = threading.Thread(target=dibujar)

@@ -88,6 +88,10 @@ class BusquedaH():
 
         while len(cola)>0:
             actual=cola.popleft()
+            if(actual[2] in destinos):
+                print('Nodo encontrado')
+                break
+
             visitados.append(actual)
             for i in actual[2].getAristas():
                 pesoAcumulado=int(i.getPeso())+int(i.getNodoDest().getValor())
@@ -97,13 +101,12 @@ class BusquedaH():
                 else:
                     p=0 #bandera para controlar nodos repetidos
                     for j in deque(visitados):
-                        #print(actual[2].getNombre()+'=='+j[1].getNombre()+' y '+i.getNodoDest().getNombre()+'=='+j[2].getNombre()+' '+str(pesoAcumulado)+'-'+str(j[0]))
                         if actual[2]==j[1] and i.getNodoDest()==j[2] and pesoAcumulado>=j[0]:
                             p=1
                     if p!=1:
                         cola.append(arr)
-                if i.getNodoDest() in destinos:
-                    aux = 1
+                #if i.getNodoDest() in destinos:
+                    #aux = 1
             cola = deque(sorted(list(cola), key=itemgetter(0)))
             print('Cola:\t\t' + ''.join(' '+str(+x[0])+''+x[1].getNombre() + '' + x[2].getNombre() for x in cola))
             print('visitados:\t\t' + ''.join(' ' + str(+x[0]) + '' + x[1].getNombre() + '' + x[2].getNombre() for x in visitados))
